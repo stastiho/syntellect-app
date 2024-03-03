@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
 import Control from './Control';
 import AutoCompleteControl from './AutoCompleteControl';
 import { ControlStore } from './ControlStore';
 
 const store = new ControlStore();
 
-const App: React.FC = observer(() => {
+const App: React.FC = () => {
 	useEffect(() => {
 		store.initialization()
 	})
@@ -22,6 +21,6 @@ const App: React.FC = observer(() => {
 			<AutoCompleteControl viewModel={store.autoCompleteViewModel2} />
 		</div>
 	);
-});
+};
 
 export default App;
