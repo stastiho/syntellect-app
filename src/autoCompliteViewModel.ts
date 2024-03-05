@@ -40,7 +40,8 @@ export class AutoCompleteViewModel {
 
 	readonly selectedSuggestions: ISuggestion[];
 
-	readonly suggestions: ISuggestion[];
+	@observable
+	suggestions: ISuggestion[];
 
 	get text(): string {
 		return this._text;
@@ -70,6 +71,12 @@ export class AutoCompleteViewModel {
 		runInAction(() => {
 			this.selectedSuggestions.push(suggestion);
 		})
+	}
+
+	public clearSuggestions() {
+		runInAction(() => {
+			this.suggestions.length = 0;
+		});
 	}
 
 	//#endregion
