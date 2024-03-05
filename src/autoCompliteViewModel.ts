@@ -67,15 +67,17 @@ export class AutoCompleteViewModel {
 
 	//#region public methods
 
-	public async setSelectedSuggestions(suggestion: ISuggestion) {
+	public async addSelectedSuggestion(suggestion: ISuggestion) {
 		runInAction(() => {
 			this.selectedSuggestions.push(suggestion);
-		})
+		});
 	}
 
-	public clearSuggestions() {
+	public removeSelectedSuggestion(suggestion: ISuggestion) {
+		let values = this.selectedSuggestions.filter(e => e.name !== suggestion.name);
 		runInAction(() => {
-			this.suggestions.length = 0;
+			this.selectedSuggestions.length = 0;
+			this.selectedSuggestions.push(...values);
 		});
 	}
 
