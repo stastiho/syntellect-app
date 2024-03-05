@@ -51,7 +51,7 @@ export class AutoCompleteViewModel {
 		}
 		this._debounceTimeout = setTimeout(() => {
 			this.updateSuggestions(value);
-		}, 300);
+		}, 200);
 		runInAction(() => this._text = value);
 	}
 
@@ -67,7 +67,6 @@ export class AutoCompleteViewModel {
 	//#region public methods
 
 	public async setSelectedSuggestions(suggestion: ISuggestion) {
-		// TODO: удалить дубликаты из selectedSuggestions
 		runInAction(() => {
 			this.selectedSuggestions.push(suggestion);
 		})
@@ -80,7 +79,8 @@ export class AutoCompleteViewModel {
 	private async updateSuggestions(text: string) {
 		try {
 			const data = await getCountryByName(text);
-			const newData = data.slice(0, this._maxSuggestions);
+			const newData = data.slice(0, this._maxSuggestions)
+				.filter((suggestion) => !this.selectedSuggestions.find((selected) => selected.name === suggestion.name));
 			runInAction(() => {
 				this.suggestions.length = 0;
 				this.suggestions.push(...newData);
