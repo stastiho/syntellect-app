@@ -11,7 +11,7 @@ export class ControlViewModel {
 	constructor(text: string) {
 		this._text = text;
 		this.leftButtons = observable.array([], { deep: false });
-		this.rigthButtons = observable.array([], { deep: false });
+		this.rightButtons = observable.array([], { deep: false });
 		makeObservable(this);
 	}
 
@@ -28,7 +28,7 @@ export class ControlViewModel {
 
 	readonly leftButtons: IButton[];
 
-	readonly rigthButtons: IButton[];
+	readonly rightButtons: IButton[];
 
 	get text(): string {
 		return this._text;
@@ -41,12 +41,12 @@ export class ControlViewModel {
 
 	//#region public methods
 
-	initialization(leftButtons: IButton[], rigthButtons: IButton[]) {
+	initialization(leftButtons: IButton[], rightButtons: IButton[]) {
 		runInAction(() => {
 			this.leftButtons.length = 0;
 			this.leftButtons.push(...leftButtons);
-			this.rigthButtons.length = 0;
-			this.rigthButtons.push(...rigthButtons);
+			this.rightButtons.length = 0;
+			this.rightButtons.push(...rightButtons);
 		})
 	}
 

@@ -16,6 +16,7 @@ export class AutoCompleteViewModel {
 		this._maxSuggestions = maxSuggestions;
 		this.selectedSuggestions = observable.array([], { deep: false });
 		this.suggestions = observable.array([], { deep: false });
+		this._debounceTimeout = null;
 		makeObservable(this);
 	}
 
@@ -31,19 +32,27 @@ export class AutoCompleteViewModel {
 
 	private _maxSuggestions: number;
 
+	private _debounceTimeout: NodeJS.Timeout | null;
+
 	//#endregion
 
 	//#region props
 
 	readonly selectedSuggestions: ISuggestion[];
 
-	readonly suggestions: ISuggestion[];
+	@observable
+	suggestions: ISuggestion[];
 
 	get text(): string {
 		return this._text;
 	}
 	set text(value: string) {
-		this.updateSuggestions(value);
+		if (this._debounceTimeout !== null) {
+			clearTimeout(this._debounceTimeout);
+		}
+		this._debounceTimeout = setTimeout(() => {
+			this.updateSuggestions(value);
+		}, 200);
 		runInAction(() => this._text = value);
 	}
 
@@ -59,10 +68,15 @@ export class AutoCompleteViewModel {
 	//#region public methods
 
 	public async setSelectedSuggestions(suggestion: ISuggestion) {
-		// TODO: удалить дубликаты из selectedSuggestions
 		runInAction(() => {
 			this.selectedSuggestions.push(suggestion);
 		})
+	}
+
+	public clearSuggestions() {
+		runInAction(() => {
+			this.suggestions.length = 0;
+		});
 	}
 
 	//#endregion
@@ -70,14 +84,14 @@ export class AutoCompleteViewModel {
 	//#region private methods
 
 	private async updateSuggestions(text: string) {
-		// TODO: debounce
 		try {
 			const data = await getCountryByName(text);
 			const newData = data.slice(0, this._maxSuggestions)
+				.filter((suggestion) => !this.selectedSuggestions.find((selected) => selected.name === suggestion.name));
 			runInAction(() => {
 				this.suggestions.length = 0;
 				this.suggestions.push(...newData);
-			})
+			});
 		} catch (e) {
 			this.error = JSON.stringify(e);
 		}

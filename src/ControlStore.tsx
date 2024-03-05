@@ -62,14 +62,15 @@ export class ControlStore {
 		}]
 		const leftButtons2: IButton[] = [{
 			text: "Show text",
-			onClick: () => {
-				// TODO: При нажатии на кнопку справа вызывается alert с текстом в контроле;
-			}
+			onClick: () => alert(this.controlViewModel2.text)
 		}]
 		const rightButtons2: IButton[] = [{
 			text: "Validate number",
 			onClick: () => {
-				// TODO: При нажатии на кнопку слева проверяем, что в контроле введено число и если это так, то выводим число через alert;
+				const num = Number(this.controlViewModel2.text);
+				if (!isNaN(num)) {
+					alert(num);
+				}
 			}
 		}]
 		this.controlViewModel1.initialization([], rightButtons1);

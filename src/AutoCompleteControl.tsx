@@ -1,33 +1,36 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AutoCompleteViewModel } from './autoCompliteViewModel';
+import './AutoCompleteControl.css'; // Импортируем CSS
 
 interface AutoCompleteControlProps {
 	viewModel: AutoCompleteViewModel;
 }
 
 const AutoCompleteControl: React.FC<AutoCompleteControlProps> = observer(({ viewModel }) => {
+	const handleSuggestionClick = (suggestion: any) => {
+		viewModel.text = suggestion.name;
+		viewModel.clearSuggestions();
+		viewModel.setSelectedSuggestions(suggestion);
+	};
+
 	return (
-		//TODO: переделать инпут для показа выбранного текста с возможность добавлять еще данные и удалять выбранный элемент
-		<div>
-			<div>
-				{viewModel.selectedSuggestions.map((suggestion, index) => (
-					<li key={index} onClick={() => viewModel.text = suggestion.name}>
-						{suggestion.name}
-					</li>
-				))}
-				<input type="text" value={viewModel.text} onChange={(e) => viewModel.text = e.target.value} />
-			</div>
-			<ul>
-				{viewModel.suggestions.map((suggestion, index) => (
-					<li key={index} onClick={() => {
-						viewModel.setSelectedSuggestions(suggestion);
-						viewModel.text = "";
-					}}>
-						{suggestion.name} - {suggestion.fullName} - {suggestion.flag}
-					</li>
-				))}
-			</ul>
+		<div className="auto-complete-container">
+			<input
+				type="text"
+				value={viewModel.text}
+				onChange={(e) => viewModel.text = e.target.value}
+				className="auto-complete-input"
+			/>
+			{viewModel.suggestions.length > 0 && (
+				<ul className="auto-complete-suggestions">
+					{viewModel.suggestions.map((suggestion, index) => (
+						<li key={index} onClick={() => handleSuggestionClick(suggestion)} className="auto-complete-suggestion">
+							{suggestion.name} - {suggestion.fullName} - {suggestion.flag}
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 	);
 });
