@@ -16,6 +16,7 @@ export class AutoCompleteViewModel {
 		this._maxSuggestions = maxSuggestions;
 		this.selectedSuggestions = observable.array([], { deep: false });
 		this.suggestions = observable.array([], { deep: false });
+		this._debounceTimeout = null;
 		makeObservable(this);
 	}
 
@@ -31,6 +32,8 @@ export class AutoCompleteViewModel {
 
 	private _maxSuggestions: number;
 
+	private _debounceTimeout: NodeJS.Timeout | null;
+
 	//#endregion
 
 	//#region props
@@ -43,7 +46,12 @@ export class AutoCompleteViewModel {
 		return this._text;
 	}
 	set text(value: string) {
-		this.updateSuggestions(value);
+		if (this._debounceTimeout !== null) {
+			clearTimeout(this._debounceTimeout);
+		}
+		this._debounceTimeout = setTimeout(() => {
+			this.updateSuggestions(value);
+		}, 300);
 		runInAction(() => this._text = value);
 	}
 
@@ -70,14 +78,13 @@ export class AutoCompleteViewModel {
 	//#region private methods
 
 	private async updateSuggestions(text: string) {
-		// TODO: debounce
 		try {
 			const data = await getCountryByName(text);
-			const newData = data.slice(0, this._maxSuggestions)
+			const newData = data.slice(0, this._maxSuggestions);
 			runInAction(() => {
 				this.suggestions.length = 0;
 				this.suggestions.push(...newData);
-			})
+			});
 		} catch (e) {
 			this.error = JSON.stringify(e);
 		}
