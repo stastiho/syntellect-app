@@ -69,3 +69,15 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+
+.auto-complete-suggestions {
+    list-style-type: none;
+}
+
+.auto-complete-suggestions li {
+    border-bottom: 1px solid #ccc;
+}
+
+.auto-complete-suggestions li:last-child {
+    border-bottom: none;
+}
