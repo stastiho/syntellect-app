@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/syntellect-app/static/css/main.e657cfa1.css",
+    "main.css": "/syntellect-app/static/css/main.6e3cd46c.css",
     "main.js": "/syntellect-app/static/js/main.566e97dd.js",
     "static/js/787.19a379e8.chunk.js": "/syntellect-app/static/js/787.19a379e8.chunk.js",
     "index.html": "/syntellect-app/index.html",
-    "main.e657cfa1.css.map": "/syntellect-app/static/css/main.e657cfa1.css.map",
+    "main.6e3cd46c.css.map": "/syntellect-app/static/css/main.6e3cd46c.css.map",
     "main.566e97dd.js.map": "/syntellect-app/static/js/main.566e97dd.js.map",
     "787.19a379e8.chunk.js.map": "/syntellect-app/static/js/787.19a379e8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e657cfa1.css",
+    "static/css/main.6e3cd46c.css",
     "static/js/main.566e97dd.js"
   ]
 }
