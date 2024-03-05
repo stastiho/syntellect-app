@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AutoCompleteViewModel } from './autoCompliteViewModel';
+import { AutoCompleteViewModel, ISuggestion } from './autoCompliteViewModel';
 import './AutoCompleteControl.css'; // Импортируем CSS
 
 interface AutoCompleteControlProps {
@@ -8,7 +8,7 @@ interface AutoCompleteControlProps {
 }
 
 const AutoCompleteControl: React.FC<AutoCompleteControlProps> = observer(({ viewModel }) => {
-	const handleSuggestionClick = (suggestion: any) => {
+	const handleSuggestionClick = (suggestion: ISuggestion) => {
 		viewModel.text = suggestion.name;
 		viewModel.clearSuggestions();
 		viewModel.setSelectedSuggestions(suggestion);
