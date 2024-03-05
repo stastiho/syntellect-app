@@ -1,7 +1,7 @@
 import { makeObservable, observable, runInAction } from 'mobx';
 import { getCountryByName } from './api/apiService';
 
-interface ISuggestion {
+export interface ISuggestion {
 	name: string;
 	fullName: string;
 	flag: string;

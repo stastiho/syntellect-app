@@ -1,13 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ControlViewModel } from './controlViewModel';
-import './Control.css'; // Импортируем CSS
+import './Control.css';
 
 interface ControlProps {
 	viewModel: ControlViewModel;
 }
 
 const Control: React.FC<ControlProps> = observer(({ viewModel }) => {
+	const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		viewModel.text = event.target.value;
+	};
+
 	return (
 		<div className="control-container">
 			<div className="control-buttons control-buttons--left">
@@ -17,9 +21,12 @@ const Control: React.FC<ControlProps> = observer(({ viewModel }) => {
 					</button>
 				))}
 			</div>
-			<p className="control-text">
-				{viewModel.text}
-			</p>
+			<input
+				type="text"
+				value={viewModel.text}
+				onChange={handleTextChange}
+				className="control-text-input"
+			/>
 			<div className="control-buttons control-buttons--right">
 				{viewModel.rightButtons.map((button, index) => (
 					<button key={index} onClick={button.onClick}>
