@@ -26,3 +26,7 @@
 .auto-complete-control .auto-complete-control-item:last-child {
     margin-left: 50px;
 }
+
+.auto-complete-control .auto-complete-control-item {
+    height: 75px;
+}
