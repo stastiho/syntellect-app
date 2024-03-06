@@ -1,17 +1,6 @@
 import { makeObservable, observable, runInAction } from 'mobx';
 import { getCountryByName } from './api/apiService';
-
-const debounce = (callback: Function, wait: number) => {
-	let timeoutId: number | null = null;
-	return (...args: any[]) => {
-		if (timeoutId !== null) {
-			window.clearTimeout(timeoutId);
-		}
-		timeoutId = window.setTimeout(() => {
-			callback.apply(this, args);
-		}, wait);
-	};
-}
+import { debounce } from './utils/debounce';
 
 export interface ISuggestion {
 	name: string;
@@ -52,8 +41,7 @@ export class AutoCompleteViewModel {
 
 	readonly selectedSuggestions: ISuggestion[];
 
-	@observable
-	suggestions: ISuggestion[];
+	readonly suggestions: ISuggestion[];
 
 	get text(): string {
 		return this._text;

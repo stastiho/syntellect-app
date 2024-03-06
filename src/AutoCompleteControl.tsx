@@ -29,6 +29,7 @@ const AutoCompleteControl: React.FC<AutoCompleteControlProps> = observer(({ view
           className="auto-complete-input"
         />
       </div>
+      {viewModel.error === "" ? null : <p>{viewModel.error}</p>}
       {viewModel.suggestions.length > 0 && (
         <ul className="auto-complete-suggestions">
           {viewModel.suggestions.map((suggestion) => (
