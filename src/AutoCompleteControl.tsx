@@ -13,12 +13,16 @@ const AutoCompleteControl: React.FC<AutoCompleteControlProps> = observer(({ view
     viewModel.addSelectedSuggestion(suggestion);
   };
 
+  const handleRemoveSelectedSuggestion = (suggestion: ISuggestion) => {
+    viewModel.removeSelectedSuggestion(suggestion);
+  };
+
   return (
     <div className="auto-complete-container">
       <div className="auto-complete-input-container">
         {viewModel.selectedSuggestions.map((suggestion) => (
           <div key={suggestion.name} className="selected-suggestion">
-            {suggestion.name} <button onClick={() => viewModel.removeSelectedSuggestion(suggestion)}><p>x</p></button>
+            {suggestion.name} <button onClick={() => handleRemoveSelectedSuggestion(suggestion)}><p>x</p></button>
           </div>
         ))}
         <input
@@ -29,7 +33,9 @@ const AutoCompleteControl: React.FC<AutoCompleteControlProps> = observer(({ view
           className="auto-complete-input"
         />
       </div>
-      {viewModel.error === "" ? null : <p>{viewModel.error}</p>}
+      <div className="error-container">
+        {viewModel.error === "" ? null : <p className="error-message">{viewModel.error}</p>}
+      </div>
       {viewModel.suggestions.length > 0 && (
         <ul className="auto-complete-suggestions">
           {viewModel.suggestions.map((suggestion) => (
