@@ -1,6 +1,18 @@
 import { makeObservable, observable, runInAction } from 'mobx';
 import { getCountryByName } from './api/apiService';
 
+const debounce = (callback: Function, wait: number) => {
+	let timeoutId: number | null = null;
+	return (...args: any[]) => {
+		if (timeoutId !== null) {
+			window.clearTimeout(timeoutId);
+		}
+		timeoutId = window.setTimeout(() => {
+			callback.apply(this, args);
+		}, wait);
+	};
+}
+
 export interface ISuggestion {
 	name: string;
 	fullName: string;
@@ -16,7 +28,7 @@ export class AutoCompleteViewModel {
 		this._maxSuggestions = maxSuggestions;
 		this.selectedSuggestions = observable.array([], { deep: false });
 		this.suggestions = observable.array([], { deep: false });
-		this._debounceTimeout = null;
+		this._debounceUpdateSuggestions = debounce(this.updateSuggestions.bind(this), 200);
 		makeObservable(this);
 	}
 
@@ -32,7 +44,7 @@ export class AutoCompleteViewModel {
 
 	private _maxSuggestions: number;
 
-	private _debounceTimeout: NodeJS.Timeout | null;
+	private _debounceUpdateSuggestions: (text: string) => void;
 
 	//#endregion
 
@@ -47,13 +59,8 @@ export class AutoCompleteViewModel {
 		return this._text;
 	}
 	set text(value: string) {
-		if (this._debounceTimeout !== null) {
-			clearTimeout(this._debounceTimeout);
-		}
-		this._debounceTimeout = setTimeout(() => {
-			this.updateSuggestions(value);
-		}, 200);
 		runInAction(() => this._text = value);
+		this._debounceUpdateSuggestions(value);
 	}
 
 	get error(): string {
