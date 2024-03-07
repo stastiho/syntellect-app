@@ -48,7 +48,12 @@ export class AutoCompleteViewModel {
 	}
 	set text(value: string) {
 		runInAction(() => this._text = value);
-		this._debounceUpdateSuggestions(value);
+		if (value === "") {
+			runInAction(() =>
+				this.suggestions.length = 0)
+		} else {
+			this._debounceUpdateSuggestions(value);
+		}
 	}
 
 	get error(): string {
@@ -81,6 +86,10 @@ export class AutoCompleteViewModel {
 	//#region private methods
 
 	private async updateSuggestions(text: string) {
+		if (this.text !== text) {
+			return;
+		}
+
 		try {
 			const data = await getCountryByName(text);
 			const newData = data.slice(0, this._maxSuggestions)

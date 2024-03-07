@@ -9,8 +9,10 @@ interface AutoCompleteControlProps {
 
 const AutoCompleteControl: React.FC<AutoCompleteControlProps> = observer(({ viewModel }) => {
   const handleSuggestionClick = (suggestion: ISuggestion) => {
-    viewModel.text = '';
-    viewModel.addSelectedSuggestion(suggestion);
+    if (!viewModel.selectedSuggestions.find((selected) => selected.name === suggestion.name)) {
+      viewModel.text = '';
+      viewModel.addSelectedSuggestion(suggestion);
+    }
   };
 
   const handleRemoveSelectedSuggestion = (suggestion: ISuggestion) => {
